@@ -1,0 +1,130 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from tkinter import *
+import time
+
+
+class Clock(Frame):
+
+    def __init__(self, parent):
+        Frame.__init__(self, parent)
+        self.pack(expand=YES, fill=BOTH)
+        
+        self.DAY = ['понедельник', 'вторник', 'среда', 'четверг',
+                    'пятница', 'суббота', 'воскресение']
+        self.MON = ['', 'январь', 'февраль', 'март', 'апрель',
+                   'май', 'июнь', 'июль', 'август', 'сентябрь',
+                   'октябрь', 'ноябрь', 'декабрь']
+        
+        self.make_clock()
+        self.tick()
+
+    def make_clock(self):
+        self.lab = Label(self, bg='blue', fg='white', width=7)
+        self.lab.configure(font=('times', 100, 'bold'))
+        self.lab.pack(expand=YES, fill=BOTH)
+        
+        self.lab_d = Label(self, bg='blue', fg='white')
+        self.lab_d.configure(font=('times', 20, 'bold'))
+        self.lab_d.configure(relief=GROOVE, bd=1)
+        self.lab_d.pack(fill=X)
+        
+        self.frm = Frame(self)
+        self.frm.pack(side=BOTTOM, fill=X)
+        self.frm.config(background='blue')
+        
+        self.btn0 = Button(self.frm, text='мандарин', command=self.ch_mandarin)
+        self.btn1 = Button(self.frm, text='электро', command=self.ch_electro)
+        self.btn2 = Button(self.frm, text='ночь', command=self.ch_noch)
+        self.btn3 = Button(self.frm, text='небо', command=self.ch_nebo)
+        self.btn4 = Button(self.frm, text='закат', command=self.ch_zakat)
+        self.btn5 = Button(self.frm, text='восход', command=self.ch_voshod)
+        self.btn6 = Button(self.frm, text='ветер', command=self.ch_veter)
+        self.btn7 = Button(self.frm, text='лето', command=self.ch_leto)
+        
+        self.btn0.config(bg='black', fg='orange', width=7)
+        self.btn1.config(bg='#6495ED', fg='yellow', width=7)
+        self.btn2.config(bg='black', fg='#59C9FF', width=7)
+        self.btn3.config(bg='white', fg='blue', width=7)
+        self.btn4.config(bg='#FF4500', fg='white', width=7)
+        self.btn5.config(bg='#FFFF00', fg='#0000EE', width=7)
+        self.btn6.config(bg='green', fg='white', width=7)
+        self.btn7.config(bg='blue', fg='white', width=7)
+                
+        self.btn0.pack(side=LEFT, expand=YES, fill=X, padx=2, pady=2)
+        self.btn1.pack(side=LEFT, expand=YES, fill=X, padx=2, pady=2)
+        self.btn2.pack(side=LEFT, expand=YES, fill=X, padx=2, pady=2)
+        self.btn3.pack(side=LEFT, expand=YES, fill=X, padx=2, pady=2)
+        self.btn4.pack(side=LEFT, expand=YES, fill=X, padx=2, pady=2)
+        self.btn5.pack(side=LEFT, expand=YES, fill=X, padx=2, pady=2)
+        self.btn6.pack(side=LEFT, expand=YES, fill=X, padx=2, pady=2)
+        self.btn7.pack(side=LEFT, expand=YES, fill=X, padx=2, pady=2)
+        
+        self.lab.bind('<Button-1>', self.full_screen_rise)
+        self.lab.bind('<Double-1>', self.full_screen_down)
+        
+    def ch_mandarin(self):
+        self.lab.configure(bg='black', fg='orange')
+        self.lab_d.configure(bg='black', fg='orange')
+        self.frm.config(background='black')
+
+    def ch_electro(self):
+        self.lab.configure(bg='#6495ED', fg='yellow')
+        self.lab_d.configure(bg='#6495ED', fg='yellow')
+        self.frm.config(background='#6495ED')
+
+    def ch_noch(self):
+        self.lab.configure(bg='black', fg='#59C9FF')
+        self.lab_d.configure(bg='black', fg='#59C9FF')
+        self.frm.config(background='black')
+
+    def ch_nebo(self):
+        self.lab.configure(bg='white', fg='blue')
+        self.lab_d.configure(bg='white', fg='blue')
+        self.frm.config(background='white')
+
+    def ch_zakat(self):
+        self.lab.configure(bg='#FF4500', fg='white')
+        self.lab_d.configure(bg='#FF4500', fg='white')
+        self.frm.config(background='#FF4500')
+
+    def ch_voshod(self):
+        self.lab.configure(bg='#FFFF00', fg='#0000EE')
+        self.lab_d.configure(bg='#FFFF00', fg='#0000EE')
+        self.frm.config(background='#FFFF00')
+
+    def ch_veter(self):
+        self.lab.configure(bg='green', fg='white')
+        self.lab_d.configure(bg='green', fg='white')
+        self.frm.config(background='green')
+
+    def ch_leto(self):
+        self.lab.configure(bg='blue', fg='white')
+        self.lab_d.configure(bg='blue', fg='white')
+        self.frm.config(background='blue')
+        
+    def tick(self):
+        self.after(1000 // 10, self.tick)
+        f_time = time.strftime('%H:%M:%S')
+        self.lab.configure(text=str(f_time))
+        d_time = time.localtime()
+        date = '%s %02d %s %02d' %\
+            (self.DAY[d_time[6]], d_time[2], self.MON[d_time[1]], d_time[0])
+        self.lab_d.configure(text=date)
+
+    def full_screen_rise(self, event):
+        self.master.attributes('-fullscreen', True)
+        self.lab.configure(font=('times', 200, 'bold'))
+        self.lab_d.configure(font=('times', 50, 'bold'))
+
+    def full_screen_down(self, event):
+        self.master.attributes('-fullscreen', False)
+        self.lab.configure(font=('times', 100, 'bold'))
+        self.lab_d.configure(font=('times', 20, 'bold'))
+
+if __name__ == '__main__':
+    root = Tk()
+    root.title('--- ЧАСЫ ---')
+    clock = Clock(root)
+    mainloop()
