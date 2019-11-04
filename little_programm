@@ -1,0 +1,65 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+from tkinter import *
+import tkinter.ttk as ttk
+import unicodedata as unic
+
+FONT = 13
+SHRIFT = 'helvetica'
+
+class ShowUnicodeRange():
+    """ Show simbols unicode in range  """
+    
+    def __init__(self, parent):
+        self.window = parent
+        self.window.title('ЮНИКОД')
+        self.window.geometry('270x615+10+10')
+
+        self.lab = ttk.Label(self.window, text='Диапазон символов:',
+                             font=(SHRIFT , FONT))
+        self.lab.grid(row=0, column=1, padx=3, pady=5)
+
+        self.lab_ot = ttk.Label(self.window, text='от',
+                                font=(SHRIFT , FONT))
+        self.lab_ot.grid(row=1, column=0, padx=3, pady=5)
+        self.ent_ot = ttk.Entry(self.window,
+                                font=(SHRIFT , FONT))
+        self.ent_ot.grid(row=1, column=1, padx=3, pady=5)
+
+        self.lab_do = ttk.Label(self.window, text='до',
+                                font=(SHRIFT , FONT))
+        self.lab_do.grid(row=2, column=0, padx=3, pady=5)
+        self.ent_do = ttk.Entry(self.window,
+                                font=(SHRIFT , FONT))
+        self.ent_do.grid(row=2, column=1, padx=3, pady=5)
+        
+        self.scrol = ttk.Scrollbar(self.window)
+        self.win_text = Text(self.window, height=15, width=16,
+                             font=(SHRIFT , 20))
+        self.scrol.configure(command=self.win_text.yview)
+        self.win_text.configure(yscrollcommand=self.scrol.set)
+        self.win_text.grid(row=3, columnspan=3)
+        self.scrol.grid(row=3, column=4, sticky=NS)
+
+
+        self.btn_show = ttk.Button(self.window, text='показать',
+                                   command=self.show_simbols)
+        self.btn_show.grid(row=4, column=1, sticky=W)
+
+        self.btn_quit = ttk.Button(self.window, text='выход',
+                                   command=self.window.quit)
+        self.btn_quit.grid(row=4, column=1, sticky=E)
+
+        self.window.mainloop()
+
+    def show_simbols(self):
+        self.start = self.ent_ot.get()
+        self.end = self.ent_do.get()
+        self.win_text.delete('1.0', END)
+        for i in range(int(self.start), int(self.end)):
+            self.win_text.insert(END, chr(i))
+
+if __name__ == '__main__':
+    win = Tk()
+    ShowUnicodeRange(win)
